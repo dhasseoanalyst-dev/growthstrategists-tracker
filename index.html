@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Growth Strategists — 2026 Roadmap Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --bg: #05100D;
@@ -679,6 +680,187 @@
     transition: all 0.15s;
   }
   .reset-btn:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── SYNC & EXPORT BAR ── */
+  .sync-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .sync-bar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .sync-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--text-muted);
+    flex: 1;
+  }
+  .sync-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .sync-dot.connected { background: var(--green); box-shadow: 0 0 6px rgba(0,200,150,0.5); }
+  .sync-dot.syncing { background: var(--amber); animation: pulse 1s infinite; }
+  .sync-dot.error { background: var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .sync-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .action-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .action-btn:hover { border-color: var(--green); color: var(--text); }
+  .action-btn.primary { background: var(--green); border-color: var(--green); color: #05100D; font-weight: 700; }
+  .action-btn.primary:hover { opacity: 0.85; }
+
+  /* ── SUPABASE SETUP MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 480px;
+    margin: 24px;
+  }
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .modal-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .modal-sub a { color: var(--green); text-decoration: none; }
+  .modal-sub a:hover { text-decoration: underline; }
+  .modal-field { margin-bottom: 14px; }
+  .modal-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .modal-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .modal-input:focus { border-color: var(--green); }
+  .modal-input::placeholder { color: var(--text-dim); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .modal-hint {
+    background: var(--surface2);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .modal-hint b { color: var(--green); font-weight: 600; }
+  .modal-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .modal-step-num {
+    background: var(--green);
+    color: #05100D;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 50%;
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 13px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 2000;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    max-width: 320px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--green); }
+  .toast.error { border-color: var(--red); }
+  .toast-icon { font-size: 16px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -699,6 +881,53 @@
 </header>
 
 <div class="wrap">
+
+  <!-- Sync & Export Bar -->
+  <div class="sync-bar">
+    <div class="sync-bar-title">☁️ Sync</div>
+    <div class="sync-status">
+      <div class="sync-dot" id="syncDot"></div>
+      <span id="syncStatusText">Not connected — data saves locally only</span>
+    </div>
+    <div class="sync-actions">
+      <button class="action-btn" onclick="openSupabaseModal()">⚙️ Setup Cloud Sync</button>
+      <button class="action-btn" onclick="exportData()">⬇️ Export Progress</button>
+      <button class="action-btn" onclick="document.getElementById('importFile').click()">⬆️ Import Progress</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+    </div>
+  </div>
+
+  <!-- Supabase Setup Modal -->
+  <div class="modal-overlay" id="supabaseModal">
+    <div class="modal">
+      <div class="modal-title">☁️ Setup Cloud Sync</div>
+      <div class="modal-sub">Connect to Supabase to sync your tracker across all devices — laptop, phone, anywhere.</div>
+      <div class="modal-hint">
+        <div class="modal-step"><div class="modal-step-num">1</div><span>Go to <a href="https://supabase.com" target="_blank">supabase.com</a> → Create a free account → New Project</span></div>
+        <div class="modal-step"><div class="modal-step-num">2</div><span>In your project: go to <b>SQL Editor</b> → paste and run this:<br><code style="background:rgba(0,200,150,0.08);padding:3px 6px;border-radius:4px;font-size:11px">CREATE TABLE tracker (id TEXT PRIMARY KEY, data JSONB);</code></span></div>
+        <div class="modal-step"><div class="modal-step-num">3</div><span>Go to <b>Project Settings → API</b> → copy your <b>Project URL</b> and <b>anon public key</b> below</span></div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Supabase Project URL</label>
+        <input class="modal-input" id="sbUrl" placeholder="https://xxxxxxxxxxxx.supabase.co" />
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Supabase Anon Public Key</label>
+        <input class="modal-input" id="sbKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+      </div>
+      <div class="modal-actions">
+        <button class="action-btn primary" onclick="saveSupabaseConfig()">Connect & Sync</button>
+        <button class="action-btn" onclick="closeSupabaseModal()">Cancel</button>
+        <button class="action-btn" style="border-color:rgba(255,90,90,0.3);color:rgba(255,90,90,0.6)" onclick="disconnectSupabase()">Disconnect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span class="toast-icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Saved</span>
+  </div>
 
   <!-- Stats Row -->
   <div class="stats-row">
@@ -754,6 +983,162 @@
 
 <script>
 const STORAGE_KEY = 'gs_tracker_v3';
+const SUPABASE_CONFIG_KEY = 'gs_supabase_config';
+const SUPABASE_ROW_ID = 'krish_gs_2026';
+
+// ── SUPABASE CLIENT ──
+let sbClient = null;
+
+function initSupabase(url, key) {
+  try {
+    sbClient = window.supabase.createClient(url, key);
+    return true;
+  } catch(e) { sbClient = null; return false; }
+}
+
+function loadSupabaseConfig() {
+  const cfg = JSON.parse(localStorage.getItem(SUPABASE_CONFIG_KEY) || 'null');
+  if (cfg && cfg.url && cfg.key) { initSupabase(cfg.url, cfg.key); return true; }
+  return false;
+}
+
+// ── SYNC STATUS UI ──
+function setSyncStatus(status, text) {
+  const dot = document.getElementById('syncDot');
+  const label = document.getElementById('syncStatusText');
+  if (dot) dot.className = 'sync-dot ' + status;
+  if (label) label.textContent = text;
+}
+
+// ── TOAST ──
+let toastTimer = null;
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : '⏳';
+  document.getElementById('toastMsg').textContent = msg;
+  toast.className = 'toast show ' + type;
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3200);
+}
+
+// ── STATE ──
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+if (!state.done) state.done = {};
+if (!state.notes) state.notes = {};
+if (!state.ig) state.ig = {};
+if (!state.revenue) state.revenue = {};
+
+// ── SAVE: local + cloud ──
+async function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  if (sbClient) {
+    setSyncStatus('syncing', 'Syncing...');
+    try {
+      const { error } = await sbClient.from('tracker').upsert({ id: SUPABASE_ROW_ID, data: state });
+      if (error) throw error;
+      setSyncStatus('connected', 'Synced ✓  ' + new Date().toLocaleTimeString('en-IN'));
+    } catch(e) {
+      setSyncStatus('error', 'Sync failed — saved locally');
+    }
+  }
+}
+
+// ── LOAD FROM CLOUD ──
+async function loadFromCloud() {
+  if (!sbClient) return false;
+  setSyncStatus('syncing', 'Loading from cloud...');
+  try {
+    const { data, error } = await sbClient.from('tracker').select('data').eq('id', SUPABASE_ROW_ID).single();
+    if (error || !data) {
+      await sbClient.from('tracker').upsert({ id: SUPABASE_ROW_ID, data: state });
+      setSyncStatus('connected', 'Connected ✓ — local data pushed to cloud');
+      return false;
+    }
+    const cloudState = data.data;
+    state.done = { ...state.done, ...cloudState.done };
+    state.notes = { ...state.notes, ...cloudState.notes };
+    state.ig = { ...state.ig, ...cloudState.ig };
+    state.revenue = { ...state.revenue, ...cloudState.revenue };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    setSyncStatus('connected', 'Synced from cloud ✓  ' + new Date().toLocaleTimeString('en-IN'));
+    showToast('Progress loaded from cloud ☁️');
+    return true;
+  } catch(e) {
+    setSyncStatus('error', 'Could not reach cloud — using local data');
+    return false;
+  }
+}
+
+// ── SUPABASE MODAL ──
+function openSupabaseModal() {
+  const cfg = JSON.parse(localStorage.getItem(SUPABASE_CONFIG_KEY) || 'null');
+  if (cfg) { document.getElementById('sbUrl').value = cfg.url || ''; document.getElementById('sbKey').value = cfg.key || ''; }
+  document.getElementById('supabaseModal').classList.add('open');
+}
+function closeSupabaseModal() { document.getElementById('supabaseModal').classList.remove('open'); }
+
+async function saveSupabaseConfig() {
+  const url = document.getElementById('sbUrl').value.trim();
+  const key = document.getElementById('sbKey').value.trim();
+  if (!url || !key) { showToast('Enter both URL and Key', 'error'); return; }
+  if (!url.includes('supabase.co')) { showToast('URL should contain supabase.co', 'error'); return; }
+  if (!initSupabase(url, key)) { showToast('Invalid config', 'error'); return; }
+  localStorage.setItem(SUPABASE_CONFIG_KEY, JSON.stringify({ url, key }));
+  closeSupabaseModal();
+  showToast('Connecting...', 'info');
+  const loaded = await loadFromCloud();
+  if (loaded) {
+    ['igGrid','revBars','revInputs','phaseTabs','phaseSections'].forEach(id => document.getElementById(id).innerHTML = '');
+    buildIGGrid(); buildRevenue(); buildTasks(); updateStats();
+  }
+}
+
+function disconnectSupabase() {
+  sbClient = null;
+  localStorage.removeItem(SUPABASE_CONFIG_KEY);
+  setSyncStatus('', 'Not connected — data saves locally only');
+  closeSupabaseModal();
+  showToast('Disconnected from cloud');
+}
+
+// ── EXPORT ──
+function exportData() {
+  const exportObj = { version: 'gs_tracker_v3', exported: new Date().toISOString(), state };
+  const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'gs-tracker-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Progress exported ⬇️');
+}
+
+// ── IMPORT ──
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      const s = imported.state || imported;
+      if (!s.done) throw new Error('bad format');
+      state.done = { ...state.done, ...s.done };
+      state.notes = { ...state.notes, ...s.notes };
+      state.ig = { ...state.ig, ...s.ig };
+      state.revenue = { ...state.revenue, ...s.revenue };
+      await save();
+      ['igGrid','revBars','revInputs','phaseTabs','phaseSections'].forEach(id => document.getElementById(id).innerHTML = '');
+      buildIGGrid(); buildRevenue(); buildTasks(); updateStats();
+      showToast('Progress imported ✅');
+    } catch(err) { showToast('Import failed — invalid file', 'error'); }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+document.getElementById('supabaseModal').addEventListener('click', function(e) { if (e.target === this) closeSupabaseModal(); });
 
 const TASKS = [
   // ── PHASE 1: MAY ──
@@ -1205,6 +1590,19 @@ buildIGGrid();
 buildRevenue();
 buildTasks();
 updateStats();
+
+// Load Supabase config and try to sync on startup
+if (loadSupabaseConfig()) {
+  setSyncStatus('syncing', 'Connecting to cloud...');
+  loadFromCloud().then(loaded => {
+    if (loaded) {
+      ['igGrid','revBars','revInputs','phaseTabs','phaseSections'].forEach(id => document.getElementById(id).innerHTML = '');
+      buildIGGrid(); buildRevenue(); buildTasks(); updateStats();
+    }
+  });
+} else {
+  setSyncStatus('', 'Not connected — data saves locally only');
+}
 </script>
 </body>
 </html>
