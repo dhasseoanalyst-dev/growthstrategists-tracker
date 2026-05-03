@@ -4,11 +4,1207 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Growth Strategists — 2026 Roadmap Tracker</title>
-<style>body{font-family:sans-serif;background:#05100D;color:#E8F5F0;display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:20px;text-align:center;padding:40px}h1{color:#00C896;font-size:2em}p{color:#6B9E8A;max-width:500px}a{color:#00C896;font-size:1.1em}</style>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05100D;
+    --surface: #0C1F18;
+    --surface2: #122B20;
+    --green: #00C896;
+    --green-dim: #00845E;
+    --green-glow: rgba(0,200,150,0.12);
+    --green-soft: rgba(0,200,150,0.07);
+    --text: #E8F5F0;
+    --text-muted: #6B9E8A;
+    --text-dim: #3D6655;
+    --border: rgba(0,200,150,0.15);
+    --border-dim: rgba(0,200,150,0.07);
+    --red: #FF5A5A;
+    --amber: #FFB347;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 80% 10%, rgba(0,200,150,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 90%, rgba(0,200,150,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ── HEADER ── */
+  header {
+    padding: 40px 24px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .logo-block { display: flex; flex-direction: column; gap: 6px; }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+  }
+
+  .tagline {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .tagline span { color: var(--green); }
+
+  .header-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .date-badge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .overall-progress-wrap { display: flex; align-items: center; gap: 12px; }
+
+  .overall-pct {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green);
+  }
+
+  .overall-bar-bg {
+    width: 120px; height: 6px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .overall-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-dim), var(--green));
+    border-radius: 99px;
+    transition: width 0.6s ease;
+  }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--border); }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    opacity: 0.5;
+  }
+
+  .stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ── PHASE TABS ── */
+  .phase-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .phase-tab {
+    padding: 9px 20px;
+    border-radius: 40px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .phase-tab:hover { border-color: var(--green); color: var(--text); }
+  .phase-tab.active { background: var(--green); border-color: var(--green); color: #05100D; font-weight: 700; }
+
+  /* ── SECTION ── */
+  .phase-section { display: none; }
+  .phase-section.visible { display: block; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .phase-badge {
+    font-size: 11px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--green-glow);
+    color: var(--green);
+    border: 1px solid var(--border);
+  }
+
+  .section-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sec-pct {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    min-width: 38px;
+    text-align: right;
+  }
+
+  .sec-bar-bg {
+    width: 100px; height: 5px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .sec-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-dim), var(--green));
+    border-radius: 99px;
+    transition: width 0.5s ease;
+  }
+
+  /* ── WEEK BLOCK ── */
+  .week-block {
+    margin-bottom: 24px;
+  }
+
+  .week-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  /* ── TASK CARD ── */
+  .task-card {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .task-card:hover { border-color: var(--border); background: var(--surface2); }
+
+  .task-card.done {
+    border-color: rgba(0,200,150,0.25);
+    background: rgba(0,200,150,0.04);
+  }
+
+  .task-card.done::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--green);
+    border-radius: 3px 0 0 3px;
+  }
+
+  .task-check {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid var(--text-dim);
+    background: transparent;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s;
+  }
+
+  .task-card.done .task-check {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .task-check svg { display: none; }
+  .task-card.done .task-check svg { display: block; }
+
+  .task-body { flex: 1; min-width: 0; }
+
+  .task-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.5;
+    transition: color 0.18s;
+  }
+
+  .task-card.done .task-title {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--text-dim);
+  }
+
+  .task-meta {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .tag-critical { background: rgba(255,90,90,0.12); color: var(--red); border: 1px solid rgba(255,90,90,0.2); }
+  .tag-high { background: rgba(255,179,71,0.1); color: var(--amber); border: 1px solid rgba(255,179,71,0.2); }
+  .tag-medium { background: var(--green-soft); color: var(--green-dim); border: 1px solid var(--border-dim); }
+
+  .tag-owner {
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border-dim);
+  }
+
+  .task-notes-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: transparent;
+    border: 1px solid var(--border-dim);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    font-size: 14px;
+  }
+
+  .task-notes-btn:hover { border-color: var(--green); color: var(--green); }
+  .task-notes-btn.has-note { border-color: var(--green-dim); color: var(--green); background: var(--green-soft); }
+
+  /* ── NOTES PANEL ── */
+  .notes-panel {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+
+  .notes-panel.open { display: block; }
+
+  .notes-textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border-dim);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 10px 12px;
+    resize: vertical;
+    min-height: 70px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .notes-textarea::placeholder { color: var(--text-dim); }
+  .notes-textarea:focus { border-color: var(--green-dim); }
+
+  .notes-save-btn {
+    margin-top: 8px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: var(--green);
+    border: none;
+    color: #05100D;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .notes-save-btn:hover { opacity: 0.85; }
+
+  /* ── INSTAGRAM TRACKER ── */
+  .ig-tracker {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 28px;
+  }
+
+  .ig-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ig-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .ig-day-label {
+    font-size: 10px;
+    text-align: center;
+    color: var(--text-dim);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+  }
+
+  .ig-dot {
+    aspect-ratio: 1;
+    border-radius: 5px;
+    background: var(--surface2);
+    border: 1px solid var(--border-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: transparent;
+    position: relative;
+  }
+
+  .ig-dot:hover { border-color: var(--green); }
+  .ig-dot.posted { background: var(--green); border-color: var(--green); }
+  .ig-dot.posted::after { content: '✓'; color: #05100D; font-size: 10px; font-weight: 700; position: absolute; }
+  .ig-dot.skipped { background: rgba(255,90,90,0.15); border-color: rgba(255,90,90,0.3); }
+  .ig-dot.today { box-shadow: 0 0 0 2px var(--green); }
+
+  .ig-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .ig-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .ig-legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+  }
+
+  /* ── REVENUE METER ── */
+  .revenue-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 28px;
+  }
+
+  .rev-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .rev-months {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    height: 80px;
+    margin-bottom: 8px;
+  }
+
+  .rev-bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .rev-bar-container {
+    width: 100%;
+    background: var(--surface2);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .rev-bar-container:hover { opacity: 0.85; }
+
+  .rev-bar-fill-inner {
+    width: 100%;
+    background: linear-gradient(180deg, var(--green), var(--green-dim));
+    border-radius: 4px 4px 0 0;
+    transition: height 0.5s ease;
+  }
+
+  .rev-bar-actual {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px 4px 0 0;
+    transition: height 0.5s ease;
+  }
+
+  .rev-month-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .rev-month-val {
+    font-size: 9px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .rev-inputs {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .rev-input-wrap { display: flex; flex-direction: column; gap: 3px; }
+
+  .rev-input-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  .rev-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border-dim);
+    border-radius: 5px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    padding: 5px 6px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .rev-input:focus { border-color: var(--green-dim); }
+  .rev-input::placeholder { color: var(--text-dim); }
+
+  /* ── MOTIVATIONAL BANNER ── */
+  .motto-banner {
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(0,200,150,0.06) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .motto-icon { font-size: 24px; flex-shrink: 0; }
+
+  .motto-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .motto-text span { color: var(--green); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    header { flex-direction: column; }
+    .header-meta { align-items: flex-start; }
+    .rev-inputs { grid-template-columns: repeat(4, 1fr); }
+    .ig-grid { gap: 4px; }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+
+  /* ── FADE IN ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .task-card { animation: fadeUp 0.3s ease both; }
+
+  .reset-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid rgba(255,90,90,0.3);
+    border-radius: 6px;
+    color: rgba(255,90,90,0.6);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reset-btn:hover { border-color: var(--red); color: var(--red); }
+</style>
 </head>
 <body>
-<h1>⏳ Tracker Loading...</h1>
-<p>The full Growth Strategists 2026 Tracker is being deployed. Please check back in 2 minutes.</p>
-<p>If this message persists, the full file upload is in progress.</p>
+
+<header>
+  <div class="logo-block">
+    <div class="logo">Growth Strategists</div>
+    <div class="tagline">2026 Scaling Tracker<br><span>₹2L → ₹15L/month</span></div>
+  </div>
+  <div class="header-meta">
+    <div class="date-badge" id="todayDate"></div>
+    <div class="overall-progress-wrap">
+      <div class="overall-bar-bg"><div class="overall-bar-fill" id="overallBar" style="width:0%"></div></div>
+      <div class="overall-pct" id="overallPct">0%</div>
+    </div>
+    <button class="reset-btn" onclick="confirmReset()">Reset All</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val" id="statDone">0</div>
+      <div class="stat-label">Tasks Done</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="statTotal">0</div>
+      <div class="stat-label">Total Tasks</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="statIG">0</div>
+      <div class="stat-label">Posts Published</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="statPhase">P1</div>
+      <div class="stat-label">Current Phase</div>
+    </div>
+  </div>
+
+  <!-- Motto -->
+  <div class="motto-banner">
+    <div class="motto-icon">🎯</div>
+    <div class="motto-text">Your Instagram is your Sales Director. <span>Start posting this week</span> — everything else follows from that.</div>
+  </div>
+
+  <!-- Instagram Posting Tracker -->
+  <div class="ig-tracker">
+    <div class="ig-title">📱 Instagram Daily Posting Tracker — May to December 2026</div>
+    <div class="ig-grid" id="igGrid"></div>
+    <div class="ig-legend">
+      <div class="ig-legend-item"><div class="ig-legend-dot" style="background:var(--green)"></div>Posted</div>
+      <div class="ig-legend-item"><div class="ig-legend-dot" style="background:rgba(255,90,90,0.3)"></div>Skipped</div>
+      <div class="ig-legend-item"><div class="ig-legend-dot" style="background:var(--surface2);border:1px solid var(--border-dim)"></div>Upcoming</div>
+    </div>
+  </div>
+
+  <!-- Revenue Tracker -->
+  <div class="revenue-section">
+    <div class="rev-title">💰 Monthly Revenue Tracker — Enter actual ₹ (in Lakhs)</div>
+    <div class="rev-months" id="revBars"></div>
+    <div class="rev-inputs" id="revInputs"></div>
+  </div>
+
+  <!-- Phase Tabs -->
+  <div class="phase-tabs" id="phaseTabs"></div>
+
+  <!-- Phase Sections -->
+  <div id="phaseSections"></div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'gs_tracker_v3';
+
+const TASKS = [
+  // ── PHASE 1: MAY ──
+  { id:'p1_w1_1', phase:1, week:'Week 1 — May 2026', title:'Register company as Private Limited or LLP (recommend Pvt Ltd)', priority:'critical', owner:'Krish' },
+  { id:'p1_w1_2', phase:1, week:'Week 1 — May 2026', title:'Apply for GST registration', priority:'critical', owner:'Krish' },
+  { id:'p1_w1_3', phase:1, week:'Week 1 — May 2026', title:'RESTART Instagram — post your first "Building 1 Crore Agency" Reel TODAY', priority:'critical', owner:'Krish' },
+  { id:'p1_w1_4', phase:1, week:'Week 1 — May 2026', title:'Brief video editor on new content series and weekly production schedule', priority:'high', owner:'Krish' },
+  { id:'p1_w1_5', phase:1, week:'Week 1 — May 2026', title:'Secure domain growthstrategists.in + set up krish@growthstrategists.in email', priority:'critical', owner:'Krish' },
+  { id:'p1_w1_6', phase:1, week:'Week 1 — May 2026', title:'Write down your 3 hero case studies (Kondaas, D2C skincare, 62K PB client) with key numbers', priority:'high', owner:'Krish' },
+
+  { id:'p1_w2_1', phase:1, week:'Week 2 — May 2026', title:'Open current account in company name (HDFC / ICICI / Kotak)', priority:'critical', owner:'Krish' },
+  { id:'p1_w2_2', phase:1, week:'Week 2 — May 2026', title:'Create professional invoice template with GST number and company letterhead', priority:'high', owner:'Krish' },
+  { id:'p1_w2_3', phase:1, week:'Week 2 — May 2026', title:'Begin agency website build: Home, Services, Case Studies, About, Contact', priority:'critical', owner:'Dev' },
+  { id:'p1_w2_4', phase:1, week:'Week 2 — May 2026', title:'Post 6 pieces of content this week (3 journey, 2 edu, 1 case study) — no breaks', priority:'critical', owner:'Krish' },
+  { id:'p1_w2_5', phase:1, week:'Week 2 — May 2026', title:'Define new pricing packages: SEO Entry ₹40K, Growth ₹60K, Premium ₹85K+', priority:'high', owner:'Krish' },
+
+  { id:'p1_w3_1', phase:1, week:'Week 3 — May 2026', title:'Write and publish Kondaas case study (Solar SEO → 10K traffic)', priority:'critical', owner:'Krish' },
+  { id:'p1_w3_2', phase:1, week:'Week 3 — May 2026', title:'Write and publish D2C skincare case study (30K traffic, ₹20–30L revenue)', priority:'critical', owner:'Krish' },
+  { id:'p1_w3_3', phase:1, week:'Week 3 — May 2026', title:'Write and publish Personal Branding case study (62K followers)', priority:'critical', owner:'Krish' },
+  { id:'p1_w3_4', phase:1, week:'Week 3 — May 2026', title:'Create service packages page with transparent pricing tiers', priority:'high', owner:'Krish' },
+  { id:'p1_w3_5', phase:1, week:'Week 3 — May 2026', title:'Inform all 7 existing clients of company registration and new payment details', priority:'high', owner:'Krish' },
+  { id:'p1_w3_6', phase:1, week:'Week 3 — May 2026', title:'Continue 6 posts/week on Instagram — document the website build journey', priority:'high', owner:'Krish' },
+
+  { id:'p1_w4_1', phase:1, week:'Week 4 — May 2026', title:'Launch agency website live', priority:'critical', owner:'Dev' },
+  { id:'p1_w4_2', phase:1, week:'Week 4 — May 2026', title:'Set up GA4, Google Search Console, Meta Pixel on website', priority:'high', owner:'Krish' },
+  { id:'p1_w4_3', phase:1, week:'Week 4 — May 2026', title:'Set up Zoho Books or Tally for monthly P&L tracking', priority:'medium', owner:'Krish' },
+  { id:'p1_w4_4', phase:1, week:'Week 4 — May 2026', title:'Create LinkedIn company page for Growth Strategists', priority:'medium', owner:'Krish' },
+  { id:'p1_w4_5', phase:1, week:'Week 4 — May 2026', title:'Post milestone Reel: "Website is LIVE — here is what I built in 30 days"', priority:'high', owner:'Krish' },
+
+  // ── PHASE 1: JUNE ──
+  { id:'p1_jun1_1', phase:1, week:'Week 5–6 — June 2026 (First Close)', title:'Apply new pricing to ALL new client proposals (₹40K+ for SEO, ₹45K+ for PB)', priority:'critical', owner:'Krish' },
+  { id:'p1_jun1_2', phase:1, week:'Week 5–6 — June 2026 (First Close)', title:'Close at least 1 new SEO client at new pricing (target ₹50–60K)', priority:'critical', owner:'Krish' },
+  { id:'p1_jun1_3', phase:1, week:'Week 5–6 — June 2026 (First Close)', title:'Build discovery call framework (30-min Zoom with fixed 5-step structure)', priority:'high', owner:'Krish' },
+  { id:'p1_jun1_4', phase:1, week:'Week 5–6 — June 2026 (First Close)', title:'Create proposal template — 1-pager with goal, approach, case study, pricing', priority:'high', owner:'Krish' },
+
+  { id:'p1_jun2_1', phase:1, week:'Week 7–8 — June 2026 (Systems)', title:'Document SEO onboarding SOP (what happens Day 1–7 for a new client)', priority:'high', owner:'Krish' },
+  { id:'p1_jun2_2', phase:1, week:'Week 7–8 — June 2026 (Systems)', title:'Document monthly reporting SOP (what goes into every client report)', priority:'high', owner:'SEO Lead' },
+  { id:'p1_jun2_3', phase:1, week:'Week 7–8 — June 2026 (Systems)', title:'Post "June revenue update" Reel — transparent milestone content drives trust', priority:'high', owner:'Krish' },
+  { id:'p1_jun2_4', phase:1, week:'Week 7–8 — June 2026 (Systems)', title:'Review Phase 1 completion — what got done, what slipped, adjust Phase 2 plan', priority:'medium', owner:'Krish' },
+
+  // ── PHASE 2: JULY–AUGUST ──
+  { id:'p2_jul1_1', phase:2, week:'July 2026 — Team Expansion', title:'Hire 1 full-time SEO Executive (can independently manage 4–5 accounts)', priority:'critical', owner:'Krish' },
+  { id:'p2_jul1_2', phase:2, week:'July 2026 — Team Expansion', title:'Formalise best SEO freelancer as Senior SEO Lead / Team Manager', priority:'high', owner:'Krish' },
+  { id:'p2_jul1_3', phase:2, week:'July 2026 — Team Expansion', title:'Launch referral programme — 10% cash reward for successful client intros', priority:'high', owner:'Krish' },
+  { id:'p2_jul1_4', phase:2, week:'July 2026 — Team Expansion', title:'Activate LinkedIn content (3 posts/week — B2B case studies, founder content)', priority:'high', owner:'Krish' },
+  { id:'p2_jul1_5', phase:2, week:'July 2026 — Team Expansion', title:'Start cold outreach system: identify 20 D2C brands/week, personalised DMs', priority:'high', owner:'Krish' },
+  { id:'p2_jul1_6', phase:2, week:'July 2026 — Team Expansion', title:'Target: close 2 new clients in July (reach 9–10 total retainers)', priority:'critical', owner:'Krish' },
+
+  { id:'p2_aug1_1', phase:2, week:'August 2026 — Content & Scale', title:'Hire 1 Personal Branding Content Writer / Strategist', priority:'high', owner:'Krish' },
+  { id:'p2_aug1_2', phase:2, week:'August 2026 — Content & Scale', title:'Build SOPs for Personal Branding delivery (content calendar, script, review flow)', priority:'high', owner:'PB Lead' },
+  { id:'p2_aug1_3', phase:2, week:'August 2026 — Content & Scale', title:'Lead magnet live: Free 15-min SEO audit or Instagram profile review CTA', priority:'high', owner:'Krish' },
+  { id:'p2_aug1_4', phase:2, week:'August 2026 — Content & Scale', title:'WhatsApp broadcast list — start building to 500+ founders & marketers', priority:'medium', owner:'Krish' },
+  { id:'p2_aug1_5', phase:2, week:'August 2026 — Content & Scale', title:'Target: 12 total retainers, ₹5L+ monthly revenue', priority:'critical', owner:'Krish' },
+  { id:'p2_aug1_6', phase:2, week:'August 2026 — Content & Scale', title:'Productise all services — publish clear deliverable sheets for each package', priority:'high', owner:'Krish' },
+
+  // ── PHASE 2: SEP–OCT ──
+  { id:'p2_sep1_1', phase:2, week:'September 2026 — Sales System', title:'Hire Business Development Executive / part-time salesperson', priority:'medium', owner:'Krish' },
+  { id:'p2_sep1_2', phase:2, week:'September 2026 — Sales System', title:'Systemise sales: CRM setup (HubSpot Free), lead status tracking', priority:'high', owner:'BDE' },
+  { id:'p2_sep1_3', phase:2, week:'September 2026 — Sales System', title:'Lead pipeline generating 15+ qualified DMs/month from Instagram', priority:'critical', owner:'Krish' },
+  { id:'p2_sep1_4', phase:2, week:'September 2026 — Sales System', title:'Pitch SEO+PB bundle to 3 existing clients — target 2 upgrades', priority:'high', owner:'Krish' },
+  { id:'p2_sep1_5', phase:2, week:'September 2026 — Sales System', title:'Target: 15 total retainers, ₹7–8L monthly revenue', priority:'critical', owner:'Krish' },
+
+  { id:'p2_oct1_1', phase:2, week:'October 2026 — Upsell & Premium', title:'Introduce Google Ads as upsell to SEO clients (₹25–50K management fee)', priority:'high', owner:'Krish' },
+  { id:'p2_oct1_2', phase:2, week:'October 2026 — Upsell & Premium', title:'Introduce Meta Ads as upsell to Personal Branding clients', priority:'high', owner:'Krish' },
+  { id:'p2_oct1_3', phase:2, week:'October 2026 — Upsell & Premium', title:'Evaluate video editor — hire full-time or continue freelancer based on volume', priority:'medium', owner:'Krish' },
+  { id:'p2_oct1_4', phase:2, week:'October 2026 — Upsell & Premium', title:'Begin targeting funded startups (Seed/Series A) for premium SEO packages', priority:'high', owner:'BDE' },
+  { id:'p2_oct1_5', phase:2, week:'October 2026 — Upsell & Premium', title:'Target: 17 total retainers, ₹9L monthly revenue', priority:'critical', owner:'Krish' },
+
+  // ── PHASE 3: NOV–DEC ──
+  { id:'p3_nov1_1', phase:3, week:'November 2026 — Systems at Scale', title:'CRM fully live — all leads, proposals, client statuses tracked', priority:'high', owner:'BDE' },
+  { id:'p3_nov1_2', phase:3, week:'November 2026 — Systems at Scale', title:'Build Looker Studio dashboards for all SEO clients (auto-reporting)', priority:'high', owner:'SEO Lead' },
+  { id:'p3_nov1_3', phase:3, week:'November 2026 — Systems at Scale', title:'Standardise monthly client review calls (Calendly + fixed agenda template)', priority:'high', owner:'SEO Lead' },
+  { id:'p3_nov1_4', phase:3, week:'November 2026 — Systems at Scale', title:'Quarterly strategy review with top 5 clients (shows premium value, reduces churn)', priority:'high', owner:'Krish' },
+  { id:'p3_nov1_5', phase:3, week:'November 2026 — Systems at Scale', title:'Target: 20 total retainers, ₹11–12L monthly revenue', priority:'critical', owner:'Krish' },
+  { id:'p3_nov1_6', phase:3, week:'November 2026 — Systems at Scale', title:'Push ₹2–3L Agency Partner package to 2–3 premium prospects', priority:'medium', owner:'Krish' },
+
+  { id:'p3_dec1_1', phase:3, week:'December 2026 — 1 Crore Goal', title:'All SOPs documented in Notion: onboarding, delivery, reporting, offboarding', priority:'high', owner:'All Leads' },
+  { id:'p3_dec1_2', phase:3, week:'December 2026 — 1 Crore Goal', title:'Review team — hire full-time Account Manager if churn risk is rising', priority:'medium', owner:'Krish' },
+  { id:'p3_dec1_3', phase:3, week:'December 2026 — 1 Crore Goal', title:'Target: 22–25 total retainers, ₹12–15L monthly revenue', priority:'critical', owner:'Krish' },
+  { id:'p3_dec1_4', phase:3, week:'December 2026 — 1 Crore Goal', title:'Plan 2027 roadmap — ads and dev as full service lines, team of 10+', priority:'medium', owner:'Krish' },
+  { id:'p3_dec1_5', phase:3, week:'December 2026 — 1 Crore Goal', title:'Post Year-End Reel: From ₹2L to ₹Xakhs in 8 months — full breakdown', priority:'high', owner:'Krish' },
+];
+
+const REVENUE_MONTHS = [
+  { label: 'May', target: 2.01 },
+  { label: 'Jun', target: 3.0 },
+  { label: 'Jul', target: 3.5 },
+  { label: 'Aug', target: 5.0 },
+  { label: 'Sep', target: 7.5 },
+  { label: 'Oct', target: 9.0 },
+  { label: 'Nov', target: 11.5 },
+  { label: 'Dec', target: 14.0 },
+];
+
+const PHASES = [
+  { id: 1, label: '📦 Phase 1', sub: 'Foundation', months: 'May – June' },
+  { id: 2, label: '🚀 Phase 2', sub: 'Growth', months: 'Jul – Oct' },
+  { id: 3, label: '🔥 Phase 3', sub: 'Scale', months: 'Nov – Dec' },
+];
+
+// ── STATE ──
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+if (!state.done) state.done = {};
+if (!state.notes) state.notes = {};
+if (!state.ig) state.ig = {};
+if (!state.revenue) state.revenue = {};
+
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+// ── DATE ──
+const today = new Date();
+document.getElementById('todayDate').textContent = today.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+// ── BUILD IG GRID ──
+function buildIGGrid() {
+  const grid = document.getElementById('igGrid');
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  days.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'ig-day-label';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  // Generate Mon–Sun for May 1 to Dec 31 2026
+  // May 1 2026 is a Friday (day index 4 in Mon-based)
+  const start = new Date(2026, 4, 1); // May 1
+  const end = new Date(2026, 11, 31); // Dec 31
+
+  // Find Monday of the week containing May 1
+  const startDay = start.getDay(); // 5 = Friday
+  const mondayOffset = startDay === 0 ? -6 : 1 - startDay;
+  const gridStart = new Date(start);
+  gridStart.setDate(gridStart.getDate() + mondayOffset);
+
+  let cur = new Date(gridStart);
+  let count = 0;
+  while (cur <= end) {
+    const key = cur.toISOString().split('T')[0];
+    const isInRange = cur >= start && cur <= end;
+    const isToday = cur.toDateString() === today.toDateString();
+    const val = state.ig[key];
+
+    const dot = document.createElement('div');
+    dot.className = 'ig-dot';
+    if (!isInRange) { dot.style.opacity = '0.15'; dot.style.cursor = 'default'; }
+    if (isToday) dot.classList.add('today');
+    if (val === 1) dot.classList.add('posted');
+    if (val === 2) dot.classList.add('skipped');
+
+    if (isInRange) {
+      dot.title = cur.toLocaleDateString('en-IN', { month:'short', day:'numeric' });
+      dot.addEventListener('click', () => {
+        const cur_val = state.ig[key] || 0;
+        state.ig[key] = cur_val === 0 ? 1 : cur_val === 1 ? 2 : 0;
+        save();
+        dot.className = 'ig-dot';
+        if (isToday) dot.classList.add('today');
+        if (state.ig[key] === 1) dot.classList.add('posted');
+        if (state.ig[key] === 2) dot.classList.add('skipped');
+        updateStats();
+      });
+    }
+
+    grid.appendChild(dot);
+    cur.setDate(cur.getDate() + 1);
+    count++;
+  }
+}
+
+// ── BUILD REVENUE ──
+function buildRevenue() {
+  const barsEl = document.getElementById('revBars');
+  const inputsEl = document.getElementById('revInputs');
+  const maxTarget = Math.max(...REVENUE_MONTHS.map(m => m.target));
+
+  REVENUE_MONTHS.forEach((m, i) => {
+    const actual = parseFloat(state.revenue[m.label] || 0);
+    const targetH = (m.target / (maxTarget * 1.1)) * 100;
+    const actualH = actual > 0 ? Math.min((actual / (maxTarget * 1.1)) * 100, 100) : 0;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'rev-bar-wrap';
+
+    const container = document.createElement('div');
+    container.className = 'rev-bar-container';
+    container.style.height = '100%';
+
+    const fill = document.createElement('div');
+    fill.className = 'rev-bar-fill-inner';
+    fill.style.height = targetH + '%';
+    fill.style.opacity = '0.3';
+
+    const actualFill = document.createElement('div');
+    actualFill.className = 'rev-bar-actual';
+    actualFill.style.height = actualH + '%';
+    actualFill.id = 'revBar_' + m.label;
+
+    container.appendChild(fill);
+    container.appendChild(actualFill);
+
+    const label = document.createElement('div');
+    label.className = 'rev-month-label';
+    label.textContent = m.label;
+
+    const val = document.createElement('div');
+    val.className = 'rev-month-val';
+    val.textContent = m.target + 'L';
+
+    wrap.appendChild(container);
+    wrap.appendChild(label);
+    wrap.appendChild(val);
+    barsEl.appendChild(wrap);
+
+    // Input
+    const iwrap = document.createElement('div');
+    iwrap.className = 'rev-input-wrap';
+
+    const ilabel = document.createElement('div');
+    ilabel.className = 'rev-input-label';
+    ilabel.textContent = m.label;
+
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.className = 'rev-input';
+    input.placeholder = m.target;
+    input.step = '0.1';
+    input.value = state.revenue[m.label] || '';
+    input.addEventListener('input', () => {
+      state.revenue[m.label] = input.value;
+      save();
+      const v = parseFloat(input.value) || 0;
+      const h = v > 0 ? Math.min((v / (maxTarget * 1.1)) * 100, 100) : 0;
+      const bar = document.getElementById('revBar_' + m.label);
+      if (bar) bar.style.height = h + '%';
+    });
+
+    iwrap.appendChild(ilabel);
+    iwrap.appendChild(input);
+    inputsEl.appendChild(iwrap);
+  });
+}
+
+// ── BUILD TASKS ──
+function buildTasks() {
+  const tabsEl = document.getElementById('phaseTabs');
+  const sectionsEl = document.getElementById('phaseSections');
+
+  PHASES.forEach((phase, pi) => {
+    // Tab
+    const tab = document.createElement('button');
+    tab.className = 'phase-tab' + (pi === 0 ? ' active' : '');
+    tab.innerHTML = `${phase.label} <span style="opacity:0.6;font-size:12px">${phase.months}</span>`;
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.phase-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.phase-section').forEach(s => s.classList.remove('visible'));
+      tab.classList.add('active');
+      document.getElementById('phase_' + phase.id).classList.add('visible');
+    });
+    tabsEl.appendChild(tab);
+
+    // Section
+    const phaseTasks = TASKS.filter(t => t.phase === phase.id);
+    const weeks = [...new Set(phaseTasks.map(t => t.week))];
+
+    const sec = document.createElement('div');
+    sec.className = 'phase-section' + (pi === 0 ? ' visible' : '');
+    sec.id = 'phase_' + phase.id;
+
+    const header = document.createElement('div');
+    header.className = 'section-header';
+
+    const titleWrap = document.createElement('div');
+    titleWrap.className = 'section-title';
+    titleWrap.innerHTML = `<span class="phase-badge">${phase.sub}</span> ${phase.label.split(' ').slice(1).join(' ')} — ${phase.months}`;
+
+    const progWrap = document.createElement('div');
+    progWrap.className = 'section-progress';
+
+    const pct = document.createElement('div');
+    pct.className = 'sec-pct';
+    pct.id = 'phasePct_' + phase.id;
+
+    const barBg = document.createElement('div');
+    barBg.className = 'sec-bar-bg';
+    const barFill = document.createElement('div');
+    barFill.className = 'sec-bar-fill';
+    barFill.id = 'phaseBar_' + phase.id;
+    barBg.appendChild(barFill);
+
+    progWrap.appendChild(barBg);
+    progWrap.appendChild(pct);
+    header.appendChild(titleWrap);
+    header.appendChild(progWrap);
+    sec.appendChild(header);
+
+    weeks.forEach(week => {
+      const weekBlock = document.createElement('div');
+      weekBlock.className = 'week-block';
+
+      const wLabel = document.createElement('div');
+      wLabel.className = 'week-label';
+      wLabel.textContent = week;
+      weekBlock.appendChild(wLabel);
+
+      const weekTasks = phaseTasks.filter(t => t.week === week);
+      weekTasks.forEach((task, ti) => {
+        const card = buildTaskCard(task, ti);
+        weekBlock.appendChild(card);
+      });
+
+      sec.appendChild(weekBlock);
+    });
+
+    sectionsEl.appendChild(sec);
+  });
+}
+
+function buildTaskCard(task, index) {
+  const card = document.createElement('div');
+  card.className = 'task-card' + (state.done[task.id] ? ' done' : '');
+  card.style.animationDelay = (index * 0.04) + 's';
+
+  const check = document.createElement('div');
+  check.className = 'task-check';
+  check.innerHTML = `<svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#05100D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  const body = document.createElement('div');
+  body.className = 'task-body';
+
+  const title = document.createElement('div');
+  title.className = 'task-title';
+  title.textContent = task.title;
+
+  const meta = document.createElement('div');
+  meta.className = 'task-meta';
+
+  const pTag = document.createElement('span');
+  pTag.className = 'tag tag-' + task.priority;
+  pTag.textContent = task.priority.toUpperCase();
+
+  const oTag = document.createElement('span');
+  oTag.className = 'tag tag-owner';
+  oTag.textContent = task.owner;
+
+  meta.appendChild(pTag);
+  meta.appendChild(oTag);
+  body.appendChild(title);
+  body.appendChild(meta);
+
+  // Notes
+  const notesBtn = document.createElement('button');
+  notesBtn.className = 'task-notes-btn' + (state.notes[task.id] ? ' has-note' : '');
+  notesBtn.title = 'Add notes';
+  notesBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+
+  const notesPanel = document.createElement('div');
+  notesPanel.className = 'notes-panel';
+
+  const textarea = document.createElement('textarea');
+  textarea.className = 'notes-textarea';
+  textarea.placeholder = 'Add notes, blockers, or context...';
+  textarea.value = state.notes[task.id] || '';
+
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'notes-save-btn';
+  saveBtn.textContent = 'Save Note';
+  saveBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.notes[task.id] = textarea.value;
+    save();
+    notesBtn.classList.toggle('has-note', !!textarea.value);
+    notesPanel.classList.remove('open');
+  });
+
+  notesPanel.appendChild(textarea);
+  notesPanel.appendChild(saveBtn);
+
+  notesBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notesPanel.classList.toggle('open');
+  });
+
+  // Toggle done on card click
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('.task-notes-btn') || e.target.closest('.notes-panel')) return;
+    state.done[task.id] = !state.done[task.id];
+    save();
+    card.classList.toggle('done');
+    updateStats();
+  });
+
+  card.appendChild(check);
+  card.appendChild(body);
+  card.appendChild(notesBtn);
+
+  // Wrap in container to append notes panel after
+  const wrapper = document.createElement('div');
+  wrapper.appendChild(card);
+  wrapper.appendChild(notesPanel);
+  return wrapper;
+}
+
+// ── STATS ──
+function updateStats() {
+  const total = TASKS.length;
+  const done = TASKS.filter(t => state.done[t.id]).length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('overallPct').textContent = pct + '%';
+  document.getElementById('overallBar').style.width = pct + '%';
+
+  const igCount = Object.values(state.ig).filter(v => v === 1).length;
+  document.getElementById('statIG').textContent = igCount;
+
+  // Phase progress
+  PHASES.forEach(phase => {
+    const pts = TASKS.filter(t => t.phase === phase.id);
+    const doneP = pts.filter(t => state.done[t.id]).length;
+    const p = pts.length > 0 ? Math.round((doneP / pts.length) * 100) : 0;
+    const pctEl = document.getElementById('phasePct_' + phase.id);
+    const barEl = document.getElementById('phaseBar_' + phase.id);
+    if (pctEl) pctEl.textContent = p + '%';
+    if (barEl) barEl.style.width = p + '%';
+  });
+
+  // Current phase
+  const p1Done = TASKS.filter(t => t.phase === 1 && state.done[t.id]).length;
+  const p1Total = TASKS.filter(t => t.phase === 1).length;
+  const p2Done = TASKS.filter(t => t.phase === 2 && state.done[t.id]).length;
+  const p2Total = TASKS.filter(t => t.phase === 2).length;
+  let curPhase = 'P1';
+  if (p1Done === p1Total && p1Total > 0) curPhase = p2Done === p2Total && p2Total > 0 ? 'P3' : 'P2';
+  document.getElementById('statPhase').textContent = curPhase;
+}
+
+function confirmReset() {
+  if (confirm('Reset all progress? This cannot be undone.')) {
+    state = { done: {}, notes: {}, ig: {}, revenue: {} };
+    save();
+    location.reload();
+  }
+}
+
+// ── INIT ──
+buildIGGrid();
+buildRevenue();
+buildTasks();
+updateStats();
+</script>
 </body>
 </html>
