@@ -680,6 +680,28 @@
   }
   .reset-btn:hover { border-color: var(--red); color: var(--red); }
 
+  .save-btn {
+    padding: 6px 16px;
+    background: var(--green);
+    border: none;
+    border-radius: 6px;
+    color: #05100D;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .save-btn:hover { opacity: 0.85; }
+  .save-btn.saved {
+    background: transparent;
+    border: 1px solid var(--green);
+    color: var(--green);
+  }
+
   /* ── SYNC BAR ── */
   .sync-bar {
     background: var(--surface);
@@ -770,6 +792,7 @@
       <div class="overall-pct" id="overallPct">0%</div>
     </div>
     <button class="reset-btn" onclick="confirmReset()">Reset All</button>
+    <button class="save-btn" id="saveBtn" onclick="manualSave()">💾 Save</button>
   </div>
 </header>
 
@@ -903,6 +926,20 @@ function _sbSave(data) {
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   _sbSave(state);
+}
+
+// ── MANUAL SAVE BUTTON ──
+let _saveBtnTimer = null;
+async function manualSave() {
+  const btn = document.getElementById('saveBtn');
+  await save();
+  btn.textContent = '✅ Saved!';
+  btn.classList.add('saved');
+  clearTimeout(_saveBtnTimer);
+  _saveBtnTimer = setTimeout(() => {
+    btn.innerHTML = '💾 Save';
+    btn.classList.remove('saved');
+  }, 2000);
 }
 
 // ── MODAL ──
